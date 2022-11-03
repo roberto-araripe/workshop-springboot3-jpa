@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.tadkey.test.entities.User;
 import com.tadkey.test.repositories.UserRepository;
+import com.tadkey.test.services.exceptions.ResourceNotFoundException;
 
 @Service
 public class UserService {
@@ -21,7 +22,7 @@ public class UserService {
 	
 	public User findById(Long id) {
 		Optional<User> obj = repository.findById(id);
-		return obj.get();
+		return obj.orElseThrow(() -> new ResourceNotFoundException(id));
 	}
 	
 	public User insert(User obj) {
@@ -29,6 +30,7 @@ public class UserService {
 	}
 	public void delete(Long id) {
 		repository.deleteById(id);
+		
 	}
 	public User update (Long id, User obj) {
 		User entity = repository.getReferenceById(id);
